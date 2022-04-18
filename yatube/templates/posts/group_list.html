@@ -1,0 +1,46 @@
+{% extends 'base.html' %} 
+{% load thumbnail %}
+{% load static %}
+{% block title %}
+<title href="{% url 'Posts:index' %}">Записи сообщества {{ group.title }}
+</title>
+{% endblock %}
+  <body>
+    <header>
+      {%include 'includes/header.html'%}{{ group.title }}
+    </header>
+    <main>
+        <li>
+       Описание {{ group.description }}
+        </li>
+      {% block content %}
+        <h1>{{ group.title }}</h1>
+        <p>{{ group.description }}</p>
+        {% for post in posts %}
+        <article>
+          <ul>
+            <li>
+              <a href="{% url 'posts:profile' post.author %}">Автор: {{ post.author.get_full_name }}</a>
+            </li>
+            <li>
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}
+            </li>
+            <a href="{% url 'posts:post_detail' post.id %}"> Подробнее:
+            </a>
+          </ul>
+          <article class="col-12 col-md-3">
+            {% thumbnail post.image "500x400" crop="center" upscale=True as im %}
+              <img class="card-img my-2" src="{{ im.url }}">
+            {% endthumbnail %}
+          </article>
+            <p>
+            {{ post.text }}
+            </p>
+        {% if not forloop.last %}<hr>{% endif %}
+        {% empty %}
+        <p> Если цикл пустой </p>
+        {% endfor %}
+        {% include 'posts/includes/paginator.html' %}
+      {% endblock %}
+    </main>      
+  </body>

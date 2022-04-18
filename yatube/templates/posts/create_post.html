@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}
+<title <title>Новый пост</title>
+{% endblock %}
+  <body>
+    <header>
+      {%include 'includes/header.html'%}
+    </header>	   
+    <main>
+      {% block content %}
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8 p-5">
+            <div class="card">
+              <div class="card-header">
+                {% if is_edit %}
+                Редактировать пост
+                {% else %}
+                Новый пост     
+                {% endif %}     
+              </div>
+              <div class="card-body">
+                {% if is_edit %}
+                  <form method="post" enctype="multipart/form-data" action="{% url 'posts:post_edit' post_id.pk %}">
+                {% else %}
+                  <form method="post" enctype="multipart/form-data" action="{% url 'posts:create_post' %}">
+                {% endif %}
+                  {% csrf_token %}        
+                  <div class="form-group row my-3 p-3">
+                    <label for="id_text">
+                      Текст поста                  
+                      <span class="required text-danger" >*</span>                  
+                    </label>
+                    <textarea name="text" cols="40" rows="10" class="form-control" required id="id_text">
+                    </textarea>                
+                    <small id="id_text-help" class="form-text text-muted">
+                      Текст нового поста
+                    </small>                  
+                  </div>            
+                  <div class="form-group row my-3 p-3">
+                    <label for="id_group">
+                      Group                  
+                    </label>
+                    {{ form.group }}
+                    <small id="id_group-help" class="form-text text-muted">
+                      Группа, к которой будет относиться пост
+                    </small>
+                  </div>
+                  <div class="form-group row my-3 p-3">
+                    <label for="id_image">
+                      Картинка                      
+                    </label>
+                    <input type="file" name="image" accept="image/*" class="form-control" id="id_image">                      
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                      {% if is_edit %}
+                        Сохранить
+                      {% else %}
+                        Добавить
+                      {% endif %}               
+                    </button> 
+                    {% if post.group %}   
+                     <a href="{% url 'posts:group_list' post.group.slug  %}">все записи группы</a>
+                    {% endif %}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  {% endblock %}
+</html>

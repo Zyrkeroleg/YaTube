@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}<title>Вы вышли из системы</title>{% endblock %}
+{% block content %}
+{% load user_filters %}
+  <body>	   
+    <main>
+      <div class="container py-5"> 
+        <div class="row justify-content-center">
+          <div class="col-md-8 p-5">
+            <div class="card">
+              <div class="card-header">Выход</div>
+              <div class="card-body"> <p>Вы вышли из своей учётной записи. Ждём вас снова!</p>
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+      </div>
+    </main>
+  </body>
+  {% endblock %}
+</html>
